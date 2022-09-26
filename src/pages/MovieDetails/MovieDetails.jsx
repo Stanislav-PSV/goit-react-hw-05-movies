@@ -17,6 +17,8 @@ const MovieDetails = () => {
 	const { movieId } = useParams();
 	const [details, setDetails] = useState(null);
 	const location = useLocation();
+	const backToMoviesList = location.state?.from ?? '/';
+	const backTo = backToMoviesList.pathname === '/' ? 'Home' : 'Movies';
 
 	useEffect(() => {
 		const getMovie = async () => {
@@ -36,9 +38,7 @@ const MovieDetails = () => {
 			{details && (
 				<CardContainer>
 					<ImageContainer>
-						<Button to={location?.state?.from ?? '/'}>
-							{' '}
-							⇦ Go back
+						<Button to={backToMoviesList}> ⇦ Go back {backTo}
 						</Button>
 						<Image src={details.img} alt={details.title} />
 					</ImageContainer>
@@ -57,8 +57,8 @@ const MovieDetails = () => {
 			<InfoContainer>
 				<DataTitle>Additional information</DataTitle>
 				<ul>
-					<InfoLink to="cast">Cast</InfoLink>
-					<InfoLink to="reviews">Reviews</InfoLink>
+					<InfoLink to="cast" state={{ from: backToMoviesList }}>Cast</InfoLink>
+					<InfoLink to="reviews" state={{ from: backToMoviesList }}>Reviews</InfoLink>
 				</ul>
 			</InfoContainer>
 			<Outlet />
